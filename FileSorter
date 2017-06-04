@@ -1,0 +1,131 @@
+#########################################
+#                                       #
+#              FILE SORTER              #
+#                                       #
+#########################################
+
+#########################################
+# Title: File Sorter                    #
+# By: Jared Neumann                     #
+# Language: Python 3                    #
+# Created: 1 June 2017                  #
+# Modified: 3 June 2017                 #
+# Description: This program takes an    #
+# an input folder with systematically   #
+# named files and sorts them into       #
+# corresponding folders                 #
+#########################################
+
+#Build the GUI using TKinter
+from tkinter import *
+from tkinter import filedialog
+
+#Import the following to navigate the directories and
+#move files between them.
+import os
+import shutil
+
+#Usually GUI programming is done inside of a Window class.
+class Window(Frame):
+
+    #Initialize the window.
+    def __init__(self, master = None):
+
+        Frame.__init__(self, master)
+
+        self.master = master
+
+        self.init_window()
+
+    #Create the attributes of the window.
+    def init_window(self):
+        
+        self.master.title("File Sorter")
+
+        self.pack(fill = BOTH, expand = 1)
+
+        quit_button = Button(self, width = 20, text = "Quit", command = self.client_exit)
+        quit_button.place(relx = 0.5, rely = 0.90, anchor = "c")
+
+        input_button = Button(self, width = 20, text = "Input", command = self.input_directory)
+        input_button.place(relx = 0.5, rely = 0.20, anchor = "c")
+
+        output_button = Button(self, width = 20, text = "Output", command = self.output_directory)
+        output_button.place(relx = 0.5, rely = 0.40, anchor = "c")
+
+        sort_button = Button(self, width = 20, text = "Sort", command = self.sort)
+        sort_button.place(relx = 0.5, rely = 0.60, anchor = "c")
+
+    #Exit function.
+    def client_exit(self):
+
+        #Use the destroy() function to stop the program from running in the background.
+        root.destroy()
+
+    #Get the input folder directory.
+    def input_directory(self):
+
+        #Prompt user to find the directory.
+        #Set as an attribute of self so it can be used by other functions.
+        self.i = filedialog.askdirectory()
+
+        #Display the currently chosen directory directly below button.
+        w = Label(root, text = self.i)
+        w.place(relx = 0.5, rely = 0.30, anchor = "c")
+
+        return self.i
+
+    #Get the output folder directory.
+    def output_directory(self):
+
+        #Again, prompt the user for the directory.
+        self.o = filedialog.askdirectory()
+
+        #Again, display the currently chosen directory.
+        v = Label(root, text = self.o)
+        v.place(relx = 0.5, rely = 0.50, anchor = "c")
+
+        return self.o
+
+    #This is the guts of the operation: the sorting function.
+    def sort(self):
+
+        #Iterate through all files in the given input directory.
+        for file in os.listdir(self.i):
+
+            #Get the current file name.
+            filename = os.fsdecode(file)
+
+            #Get the first item from the name.
+            #This will be the corresponding folder name.
+            #This can be modified easily to find any substring of the filename.
+            foldername = filename.split('-')[0]
+
+            #Now iterate through the output directory folders.
+            for folder in os.listdir(self.o):
+
+                #Match the folder name with the modified file name.
+                if folder == foldername:
+
+                    #Modify the given input and output directory using the file names and folder names.
+                    #Move files from the input directory to the output directory.
+                    shutil.move(self.i + '/' + filename, self.o + '/' + foldername)
+
+                #If no match is found, move on to the next possible match.
+                else:
+                    pass
+
+        #When finished iterating, display "Done!" below the "Sort" button.
+        u = Label(root, text = "Done!")
+        u.place(relx = 0.5, rely = 0.70, anchor = "c")
+            
+        
+
+#Create the window and all of its attributes.
+root = Tk()
+
+root.geometry("400x300")
+
+app = Window(root)
+
+root.mainloop()
