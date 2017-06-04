@@ -18,6 +18,7 @@
 
 #Example input file: 14N11W01-M1268-Lease-11.19.1957.pdf
 #Example output folder: 14N11W01
+#This program does not create missing folders. All folders must already exist.
 
 #Build the GUI using TKinter
 from tkinter import *
