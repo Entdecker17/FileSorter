@@ -16,6 +16,9 @@
 # corresponding folders                 #
 #########################################
 
+#Example input file: 14N11W01-M1268-Lease-11.19.1957
+#Example output folder: 14N11W01
+
 #Build the GUI using TKinter
 from tkinter import *
 from tkinter import filedialog
